@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Success</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 50px;
+        background-color: #f4f4f4;
+    }
+    .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        display: inline-block;
+    }
+    h1 {
+        color: #28a745;
+    }
+    a {
+        text-decoration: none;
+        color: white;
+        background: #007bff;
+        padding: 10px 15px;
+        border-radius: 5px;
+        display: inline-block;
+        margin-top: 15px;
+    }
+    a:hover {
+        background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Your test has been saved successfully! ✅</h1>
+  <p>You can now invite users or create another test.</p>
+  <a href="/createTest">Create Another Test</a>
+  <a href="/inviteUser">Invite Users</a>
+</div>
+
+</body>
+</html>

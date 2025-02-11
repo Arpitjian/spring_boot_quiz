@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Assign Users to Test</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; padding: 20px; }
+    .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background: #f9f9f9; }
+    h1 { text-align: center; }
+    label { font-weight: bold; display: block; margin-top: 10px; }
+    select, button, input { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ccc; border-radius: 4px; }
+    button { background: #007bff; color: white; cursor: pointer; }
+    button:hover { background: #0056b3; }
+    .user-list { list-style-type: none; padding: 0; }
+    .user-list li { padding: 5px; border-bottom: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Assign Users to a Test</h1>
+
+  <!-- ✅ Form to assign users to a test -->
+  <form action="/assignTest" method="post" onsubmit="return updateHiddenTestId()">
+    <label for="test">Select Test:</label>
+    <select id="test" name="testId" required onchange="updateHiddenTestId()">
+      <option value="">-- Select a Test --</option>
+      <option th:each="test : ${tests}" th:value="${test.id}" th:text="${test.testName}"></option>
+    </select>
+
+    <!-- Hidden field to make sure testId is always sent -->
+    <input type="hidden" id="hiddenTestId" name="testId" th:value="${testId}">
+
+    <h2>Select Users:</h2>
+    <ul class="user-list">
+      <li th:each="user : ${users}">
+        <input type="checkbox" name="userIds" th:value="${user.id}">
+        <span th:text="${user.userName}"></span>
+      </li>
+    </ul>
+
+    <br>
+    <button type="submit">Assign Users to Test</button>
+  </form>
+
+</div>
+
+</body>
+</html>

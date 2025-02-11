@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Take Test</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        padding: 20px;
+    }
+    .container {
+        display: flex;
+        max-width: 800px;
+        margin: auto;
+    }
+    .sidebar {
+        width: 150px;
+        padding: 10px;
+        border-right: 2px solid #ccc;
+    }
+    .sidebar button {
+        display: block;
+        width: 100%;
+        margin-bottom: 5px;
+        padding: 8px;
+        border: none;
+        background: #007bff;
+        color: white;
+        cursor: pointer;
+    }
+    .sidebar button:hover {
+        background: #0056b3;
+    }
+    .question-container {
+        flex: 1;
+        padding: 20px;
+    }
+    .options label {
+        display: block;
+        margin: 5px 0;
+    }
+  </style>
+  <script>
+    function showQuestion(index) {
+        let questions = document.getElementsByClassName("question");
+        for (let i = 0; i < questions.length; i++) {
+            questions[i].style.display = "none";
+        }
+        document.getElementById("question-" + index).style.display = "block";
+    }
+  </script>
+</head>
+<body>
+
+<div class="container">
+  <!-- Sidebar for question numbers -->
+  <div class="sidebar">
+    <h3>Questions</h3>
+    <button th:each="question, iterStat : ${questions}"
+            th:text="${iterStat.index + 1}"
+            th:onclick="|showQuestion(${iterStat.index})|">
+    </button>
+  </div>
+
+  <!-- Question Display Area -->
+  <div class="question-container">
+    <form action="/saveUserResponse" method="post">
+      <input type="hidden" name="testId" th:value="${testId != null ? testId : 0}">
+      <input type="hidden" name="userId" th:value="${userId != null ? userId : 0}">
+
+
+      <div th:each="question, iterStat : ${questions}"
+           th:id="|question-${iterStat.index}|"
+           class="question"
+           th:style="${iterStat.index == 0} ? 'display:block;' : 'display:none;'">
+
+        <h2 th:text="|Question ${iterStat.index + 1}: ${question.description}|"></h2>
+
+        <div class="options">
+          <label>
+            <input type="radio" th:name="|answer-${question.id}|" th:value="${question.option1}" required>
+            <span th:text="${question.option1}"></span>
+          </label>
+
+          <label>
+            <input type="radio" th:name="|answer-${question.id}|" th:value="${question.option2}">
+            <span th:text="${question.option2}"></span>
+          </label>
+
+          <label>
+            <input type="radio" th:name="|answer-${question.id}|" th:value="${question.option3}">
+            <span th:text="${question.option3}"></span>
+          </label>
+
+          <label>
+            <input type="radio" th:name="|answer-${question.id}|" th:value="${question.option4}">
+            <span th:text="${question.option4}"></span>
+          </label>
+        </div>
+      </div>
+
+      <button type="submit">Submit Test</button>
+    </form>
+
+  </div>
+</div>
+
+</body>
+</html>

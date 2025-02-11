@@ -19,11 +19,14 @@ public class User {
     public String getPassword() {
         return password;
     }
+
     public User() {
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
+
     public User(String username, String password, String userRole) {
         this.userName = username;
         this.password = password;
@@ -31,7 +34,7 @@ public class User {
     }
 
     @Column(nullable = false)
-    private  String password;
+    private String password;
 
 
     public Long getId() {

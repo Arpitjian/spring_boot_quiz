@@ -15,22 +15,22 @@
 </head>
 <body>
 <h1>Enter Test Details</h1>
-<!-- Form to enter the number of questions -->
+
 <form id="testDetailsForm">
 
     <label for="questionCount">Number of Questions:</label>
-    <input type="number" id="questionCount" name="questionCount" min="1" required />
+    <input type="number" id="questionCount" name="questionCount" min="1" required/>
     <button type="submit">Submit Test Details</button>
 </form>
 
 <h1>Enter Questions and Options</h1>
-<!-- Form to enter the questions, initially hidden -->
+<
 <form th:action="@{/saveQuestions}" method="post" id="questionsForm" style="display:none;">
     <div id="questionsContainer">
-        <!-- Dynamic question sets will be added here -->
+
     </div>
 
-    <input type="hidden" id="testId" name="testId" />  <!-- Hidden field for test_id -->
+    <input type="hidden" id="testId" name="testId"/>
 
     <button type="submit">Save Questions</button>
 </form>

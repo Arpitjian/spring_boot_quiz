@@ -18,6 +18,7 @@ public class QustionController {
 
     @Autowired
     private QuestionRepo qRepo;
+
     @PostMapping("/saveQuestions")
     public String saveQuestions(
             @RequestParam(value = "question", required = false) List<String> questions,
@@ -28,7 +29,7 @@ public class QustionController {
             @RequestParam(value = "correctAns", required = false) List<String> correctAns,
             Model model) {
 
-        // Debugging: Print received parameters
+
         System.out.println("Received Questions: " + questions);
         System.out.println("Option A: " + opt1);
         System.out.println("Option B: " + opt2);
@@ -36,14 +37,14 @@ public class QustionController {
         System.out.println("Option D: " + opt4);
         System.out.println("Correct Answers: " + correctAns);
 
-        // Check if questions list is null or empty
+
         if (questions == null || questions.isEmpty()) {
             System.out.println("ERROR: 'question' parameter is missing or empty!");
             model.addAttribute("message", "No questions received!");
             return "error";
         }
 
-        // Save questions to database
+
         List<Question> questionList = new ArrayList<>();
         for (int i = 0; i < questions.size(); i++) {
             Question question = new Question();
@@ -62,10 +63,11 @@ public class QustionController {
 
         return "savedQuestions";
     }
+
     @GetMapping("/viewQuestions")
     public String viewQuestions(Model model) {
-        List<Question> questions = qRepo.findAll();  // Fetch all questions
-        model.addAttribute("questions", questions);  // Pass to the view
-        return "viewQuestions";  // Renders viewQuestions.html
+        List<Question> questions = qRepo.findAll();
+        model.addAttribute("questions", questions);
+        return "viewQuestions";
     }
 }

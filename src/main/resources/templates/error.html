@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Take Test</title>
+    <title>Test Created Successfully</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 20px; padding: 20px; text-align: center; }
         .container { max-width: 500px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background: #f9f9f9; }
-        h1 { color: #333; }
+        h1 { color: green; }
         p { font-size: 18px; }
         a { display: inline-block; margin-top: 20px; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; }
         a:hover { background: #0056b3; }
@@ -14,11 +14,9 @@
 <body>
 
 <div class="container">
-    <h1>Take Test</h1>
-    <p>Click the button below to start your test.</p>
-    <form action="/testDetails">
-        <button>Enter test page</button>
-    </form>
+    <h1>Some error</h1>
+    <p>Your test has been successfully created.</p>
+    <a th:href="@{/adminDashboard}">Return to Dashboard</a>
 </div>
 
 </body>

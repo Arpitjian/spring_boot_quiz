@@ -5,7 +5,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-//import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class Test {
 
     @ManyToMany
     @JoinTable(
-            name = "test_questions", // This table stores the relationship
+            name = "test_questions",
             joinColumns = @JoinColumn(name = "test_id"),
             inverseJoinColumns = @JoinColumn(name = "question_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"test_id", "question_id"})
@@ -37,7 +37,8 @@ public class Test {
     private LocalDateTime endTime;
 
     // Constructors
-    public Test() {}
+    public Test() {
+    }
 
     public Test(String testName, List<Question> questions, LocalDateTime startTime, LocalDateTime endTime) {
         this.testName = testName;
@@ -53,20 +54,45 @@ public class Test {
     }
 
 
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
-    public String getTestName() { return testName; }
-    public void setTestName(String testName) { this.testName = testName; }
+    public Long getId() {
+        return id;
+    }
 
-    public List<Question> getQuestions() { return questions; }
-    public void setQuestions(List<Question> questions) { this.questions = questions; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public LocalDateTime getStartTime() { return startTime; }
-    public void setStartTime(LocalDateTime startTime) { this.startTime = startTime; }
+    public String getTestName() {
+        return testName;
+    }
 
-    public LocalDateTime getEndTime() { return endTime; }
-    public void setEndTime(LocalDateTime endTime) { this.endTime = endTime; }
+    public void setTestName(String testName) {
+        this.testName = testName;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
 }
 

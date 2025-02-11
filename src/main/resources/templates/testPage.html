@@ -1,109 +1,244 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Take Test</title>
-  <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        padding: 20px;
-    }
-    .container {
-        display: flex;
-        max-width: 800px;
-        margin: auto;
-    }
-    .sidebar {
-        width: 150px;
-        padding: 10px;
-        border-right: 2px solid #ccc;
-    }
-    .sidebar button {
-        display: block;
-        width: 100%;
-        margin-bottom: 5px;
-        padding: 8px;
-        border: none;
-        background: #007bff;
-        color: white;
-        cursor: pointer;
-    }
-    .sidebar button:hover {
-        background: #0056b3;
-    }
-    .question-container {
-        flex: 1;
-        padding: 20px;
-    }
-    .options label {
-        display: block;
-        margin: 5px 0;
-    }
-  </style>
-  <script>
-    function showQuestion(index) {
-        let questions = document.getElementsByClassName("question");
-        for (let i = 0; i < questions.length; i++) {
-            questions[i].style.display = "none";
+    <title>Take Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
         }
-        document.getElementById("question-" + index).style.display = "block";
-    }
-  </script>
+        .container {
+            display: flex;
+            max-width: 800px;
+            margin: auto;
+        }
+        .sidebar {
+            width: 150px;
+            padding: 10px;
+            border-right: 2px solid #ccc;
+        }
+        .sidebar button {
+            display: block;
+            width: 100%;
+            margin-bottom: 5px;
+            padding: 8px;
+            border: none;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        .sidebar button:hover {
+            background: #0056b3;
+        }
+        .question-container {
+            flex: 1;
+            padding: 20px;
+        }
+        .options label {
+            display: block;
+            margin: 5px 0;
+        }
+    </style>
+
 </head>
 <body>
+<p>Start Time: <span th:text="${startTime}"></span></p>
+<p>End Time: <span id ="endTime" th:text="${endTime}"></span></p>
+<div class="timer">Time Left: <span id="timeRemaining"></span></div>
+
 
 <div class="container">
-  <!-- Sidebar for question numbers -->
-  <div class="sidebar">
-    <h3>Questions</h3>
-    <button th:each="question, iterStat : ${questions}"
-            th:text="${iterStat.index + 1}"
-            th:onclick="|showQuestion(${iterStat.index})|">
-    </button>
-  </div>
 
-  <!-- Question Display Area -->
-  <div class="question-container">
-    <form action="/saveUserResponse" method="post">
-      <input type="hidden" name="testId" th:value="${testId != null ? testId : 0}">
-      <input type="hidden" name="userId" th:value="${userId != null ? userId : 0}">
+    <div class="sidebar">
+        <h3>Questions</h3>
+        <button th:each="question, iterStat : ${questions}"
+                th:text="${iterStat.index + 1}"
+                th:onclick="|showQuestion(${iterStat.index})|">
+        </button>
+    </div>
 
 
-      <div th:each="question, iterStat : ${questions}"
-           th:id="|question-${iterStat.index}|"
-           class="question"
-           th:style="${iterStat.index == 0} ? 'display:block;' : 'display:none;'">
+    <div class="question-container">
+        <form action="/saveUserResponse"  id ="testPage" method="post">
+            <input type="hidden" name="testId" th:value="${testId != null ? testId : 0}">
+            <input type="hidden" name="userId" th:value="${userId != null ? userId : 0}">
 
-        <h2 th:text="|Question ${iterStat.index + 1}: ${question.description}|"></h2>
 
-        <div class="options">
-          <label>
-            <input type="radio" th:name="|answer-${question.id}|" th:value="${question.option1}" required>
-            <span th:text="${question.option1}"></span>
-          </label>
+            <div th:each="question, iterStat : ${questions}"
+                 th:id="|question-${iterStat.index}|"
+                 class="question"
+                 th:style="${iterStat.index == 0} ? 'display:block;' : 'display:none;'">
 
-          <label>
-            <input type="radio" th:name="|answer-${question.id}|" th:value="${question.option2}">
-            <span th:text="${question.option2}"></span>
-          </label>
+                <h2 th:text="|Question ${iterStat.index + 1}: ${question.description}|"></h2>
 
-          <label>
-            <input type="radio" th:name="|answer-${question.id}|" th:value="${question.option3}">
-            <span th:text="${question.option3}"></span>
-          </label>
+                <div class="options">
+                    <label>
+                        <input type="radio" th:name="|answer-${question.id}|" th:value="${question.option1}" required>
+                        <span th:text="${question.option1}"></span>
+                    </label>
 
-          <label>
-            <input type="radio" th:name="|answer-${question.id}|" th:value="${question.option4}">
-            <span th:text="${question.option4}"></span>
-          </label>
-        </div>
-      </div>
+                    <label>
+                        <input type="radio" th:name="|answer-${question.id}|" th:value="${question.option2}">
+                        <span th:text="${question.option2}"></span>
+                    </label>
 
-      <button type="submit">Submit Test</button>
-    </form>
+                    <label>
+                        <input type="radio" th:name="|answer-${question.id}|" th:value="${question.option3}">
+                        <span th:text="${question.option3}"></span>
+                    </label>
 
-  </div>
+                    <label>
+                        <input type="radio" th:name="|answer-${question.id}|" th:value="${question.option4}">
+                        <span th:text="${question.option4}"></span>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit">Submit Test</button>
+        </form>
+
+    </div>
 </div>
+<script>
+    var endTimeStr = document.getElementById("endTime").innerText;
+    var endTime = new Date(endTimeStr).getTime();
+  function updateTimer() {
+      var now = new Date().getTime();
+      var timeLeft = endTime - now;
 
+      if (timeLeft <= 0) {
+          document.getElementById("timeRemaining").innerText = "Time Over!";
+          document.getElementById("testPage").submit(); // Auto-submit the form
+      } else {
+          var minutes = Math.floor(timeLeft / (1000 * 60));
+          var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+          document.getElementById("timeRemaining").innerText = minutes + "m " + seconds + "s";
+      }
+  }
+
+  setInterval(updateTimer, 1000);
+
+  function showQuestion(index) {
+      let questions = document.getElementsByClassName("question");
+      for (let i = 0; i < questions.length; i++) {
+          questions[i].style.display = "none";
+      }
+      document.getElementById("question-" + index).style.display = "block";
+  }
+  var endTimeStr = document.getElementById("endTime").innerText;
+  var endTime = new Date(endTimeStr).getTime();
+
+
+</script>
 </body>
 </html>
+
+
+<!--///-->
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Quiz</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            background-color: #f2f2f2;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--        }-->
+
+<!--        .container {-->
+<!--            width: 100%;-->
+<!--            max-width: 600px;-->
+<!--            margin: 100px auto;-->
+<!--            padding: 20px;-->
+<!--            background-color: #fff;-->
+<!--            border-radius: 10px;-->
+<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
+<!--        }-->
+
+<!--        h2 {-->
+<!--            text-align: center;-->
+<!--            margin-bottom: 20px;-->
+<!--        }-->
+
+<!--        .timer {-->
+<!--            text-align: center;-->
+<!--            font-size: 18px;-->
+<!--            font-weight: bold;-->
+<!--            color: red;-->
+<!--            margin-bottom: 15px;-->
+<!--        }-->
+
+<!--        button {-->
+<!--            background-color: #4CAF50;-->
+<!--            color: white;-->
+<!--            border: none;-->
+<!--            padding: 10px 20px;-->
+<!--            font-size: 16px;-->
+<!--            width: 100%;-->
+<!--            border-radius: 5px;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+
+<!--        button:hover {-->
+<!--            background-color: #45a049;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div class="container">-->
+<!--    <h2 th:text="${testName}">Test Name</h2>-->
+
+<!--    <p>Start Time: <span th:text="${startTime}"></span></p>-->
+<!--    <p>End Time: <span id="endTime" th:text="${endTime}"></span></p>-->
+
+<!--    <div class="timer">Time Left: <span id="timeRemaining"></span></div>-->
+
+<!--    <form id="quizForm" action="/submitTest" method="POST">-->
+<!--        <input type="hidden" name="testId" th:value="${testId}" />-->
+<!--        <input type="hidden" name="userId" th:value="${userId}" />-->
+
+<!--        <div th:each="question : ${questions}">-->
+<!--            <p th:text="${question.description}"></p>-->
+<!--            <input type="radio" th:name="'answer-' + ${question.id}" th:value="${question.option1}" /> <span th:text="${question.option1}"></span><br>-->
+<!--            <input type="radio" th:name="'answer-' + ${question.id}" th:value="${question.option2}" /> <span th:text="${question.option2}"></span><br>-->
+<!--            <input type="radio" th:name="'answer-' + ${question.id}" th:value="${question.option3}" /> <span th:text="${question.option3}"></span><br>-->
+<!--            <input type="radio" th:name="'answer-' + ${question.id}" th:value="${question.option4}" /> <span th:text="${question.option4}"></span><br>-->
+<!--        </div>-->
+
+<!--        <button type="submit">Submit</button>-->
+<!--    </form>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    document.addEventListener("DOMContentLoaded", function() {-->
+<!--        // Get endTime from Thymeleaf (format: YYYY-MM-DDTHH:MM:SS)-->
+<!--        var endTimeStr = document.getElementById("endTime").innerText;-->
+<!--        var endTime = new Date(endTimeStr).getTime();-->
+
+<!--        function updateTimer() {-->
+<!--            var now = new Date().getTime();-->
+<!--            var timeLeft = endTime - now;-->
+
+<!--            if (timeLeft <= 0) {-->
+<!--                document.getElementById("timeRemaining").innerText = "Time Over!";-->
+<!--                document.getElementById("quizForm").submit(); // Auto-submit the form-->
+<!--            } else {-->
+<!--                var minutes = Math.floor(timeLeft / (1000 * 60));-->
+<!--                var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);-->
+<!--                document.getElementById("timeRemaining").innerText = minutes + "m " + seconds + "s";-->
+<!--            }-->
+<!--        }-->
+
+<!--        // Update timer every second-->
+<!--        setInterval(updateTimer, 1000);-->
+<!--    });-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->

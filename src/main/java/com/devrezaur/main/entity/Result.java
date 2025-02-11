@@ -2,7 +2,7 @@ package com.devrezaur.main.entity;
 
 import com.devrezaur.main.entity.Test;
 import com.devrezaur.main.entity.User;
-//import jakarta.persistence.*;
+
 
 import javax.persistence.*;
 

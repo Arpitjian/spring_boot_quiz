@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,14 +34,14 @@ public class TestService {
         List<Question> questions = questionRepository.findAllById(questionIds);
         logger.info("Fetched Questions: {}", questions);
 
-        // If no questions found, print an error
+
         if (questions.isEmpty()) {
             logger.error("No questions found for IDs: {}", questionIds);
         }
 
         test.setQuestions(questions);
 
-        // Save test
+
         Test savedTest = testRepository.save(test);
         logger.info("Saved Test ID: {}", savedTest.getId());
         logger.info("Test Questions: {}", savedTest.getQuestions());

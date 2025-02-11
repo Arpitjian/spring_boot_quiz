@@ -5,6 +5,7 @@ import com.devrezaur.main.entity.Invites;
 import com.devrezaur.main.entity.Test;
 import com.devrezaur.main.entity.User;
 import com.devrezaur.main.repository.InviteRepo;
+import com.devrezaur.main.repository.ResultRepo;
 import com.devrezaur.main.repository.TestRepo;
 import com.devrezaur.main.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class TestAssignmentController {
     @Autowired
     private InviteRepo inviteRepo;
 
+
     @GetMapping("/inviteUser")
     public String showAssignUsersPage(Model model) {
         // Get all users with role "user"
@@ -46,15 +48,9 @@ public class TestAssignmentController {
     public String assignTest(@RequestParam long testId, @RequestParam List<Integer> userIds) {
         Test test = testRepo.findById(testId).orElse(null);
         if (test != null) {
-            // ✅ Convert userIds to List<Long>
-            //for()
-//            Test test1 = testRepo.findById(testId).orElse(null);
-//            if (test1 == null) {
-//                System.out.println("Test not found for ID: " + testId);
-//                return "redirect:/inviteUser?error=TestNotFound";
 
 
-            System.out.println("chosen testId :" +testId);
+            System.out.println("chosen testId :" + testId);
             List<Long> userIdsLong = userIds.stream()
                     .map(Long::valueOf)
                     .collect(Collectors.toList());
@@ -63,18 +59,18 @@ public class TestAssignmentController {
             List<User> users = userRepo.findAllById(userIdsLong);
 
             for (User user : users) {
-                if (!inviteRepo.existsByTestAndUser(test, user)) {
-                    inviteRepo.save(new Invites(test, user));
-                }
+
+                inviteRepo.save(new Invites(test, user));
+
             }
         }
 
-        return "redirect:/inviteUser?testId=" + testId;
+        return "successInvites";
     }
 
     @GetMapping("/exitPage")
-    public String exitPage(){
-        return  "exitPage";
+    public String exitPage() {
+        return "exitPage";
     }
 
 

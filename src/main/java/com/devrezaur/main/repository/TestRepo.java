@@ -13,6 +13,7 @@ import java.util.Optional;
 @Repository
 public interface TestRepo extends JpaRepository<Test, Long> {
     Optional<Test> findByTestName(String testName);
+
     @Repository
     public interface QuestionRepo extends JpaRepository<Question, Long> {
         @Query("SELECT q FROM Question q JOIN q.tests t WHERE t.id = :testId")

@@ -1,6 +1,6 @@
 package com.devrezaur.main.entity;
 
-//import jakarta.persistence.*;
+
 
 
 import javax.persistence.*;
@@ -25,7 +25,11 @@ public class Invites {
     public Long getId() {
         return id;
     }
-    public Invites(Test test,User user){}
+
+    public Invites(Test test, User user) {
+        this.test = test;
+        this.user = user;
+    }
 
     public void setId(Long id) {
         this.id = id;

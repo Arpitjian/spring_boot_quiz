@@ -1,8 +1,7 @@
 package com.devrezaur.main.entity;
 
-//import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+
+
 
 import javax.persistence.*;
 import java.util.List;
@@ -36,7 +35,7 @@ public class Question {
     private String correctAnswer;
 
 
-    @ManyToMany(mappedBy = "questions")  // ✅ This links to the Test entity
+    @ManyToMany(mappedBy = "questions")
     private List<Test> tests;
 
     public Long getId() {
@@ -95,5 +94,5 @@ public class Question {
         this.correctAnswer = correctAnswer;
     }
 
-    }
+}
 

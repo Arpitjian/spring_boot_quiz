@@ -1,7 +1,6 @@
 package com.devrezaur.main.entity;
 
 
-
 import java.util.List;
 
 
@@ -19,21 +18,22 @@ public class Response {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "test_id", nullable = false)
-    private Test test;  // Reference to the Test entity
+    private Test test;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", nullable = false)
-    private Question question;  // Reference to the Question entity
+    private Question question;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;  // Reference to the User entity
+    private User user;
 
     @Column(name = "answer_chosen", nullable = false)
-    private String answerChosen;  // Answer selected by the user
+    private String answerChosen;
 
     // Constructors
-    public Response() {}
+    public Response() {
+    }
 
     public Response(Test test, Question question, User user, String answerChosen) {
         this.test = test;
@@ -42,7 +42,7 @@ public class Response {
         this.answerChosen = answerChosen;
     }
 
-    // Getters and Setters
+
     public Integer getResponseId() {
         return responseId;
     }

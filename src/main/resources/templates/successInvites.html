@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Success</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        .container { max-width: 500px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background: #f9f9f9; }
+        h1 { color: #28a745; }
+        p { font-size: 18px; }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            color: white;
+            background: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎉 Success!</h1>
+    <p>Users have been successfully assigned to the test.</p>
+
+
+    <p>Test ID: <span th:text="${testId}"></span></p>
+
+    <a href="/inviteUser" class="btn">Assign More Users</a>
+</div>
+
+</body>
+</html>

@@ -1,120 +1,120 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Create Test</title>
-  <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        padding: 20px;
-    }
-    .container {
-        max-width: 600px;
-        margin: auto;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        background: #f9f9f9;
-    }
-    h1 {
-        text-align: center;
-    }
-    label {
-        font-weight: bold;
-    }
-    input {
-        width: 100%;
-        padding: 8px;
-        margin: 5px 0;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-    .question-container, .selected-questions {
-        margin-top: 20px;
-    }
-    .question {
-        padding: 10px;
-        border: 1px solid #ccc;
-        margin-bottom: 10px;
-        background: white;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    button {
-        padding: 5px 10px;
-        background: #28a745;
-        color: white;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-    }
-    button:hover {
-        background: #218838;
-    }
-  </style>
+    <title>Create Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .question-container, .selected-questions {
+            margin-top: 20px;
+        }
+        .question {
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        button {
+            padding: 5px 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #218838;
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
-  <h1>Create Test</h1>
+    <h1>Create Test</h1>
 
-  <form id="testForm" action="/saveTest" method="post">
+    <form id="testForm" action="/saveTest" method="post">
 
-    <label for="testName">Test Name:</label>
-    <input type="text" id="testName" name="testName" required>
+        <label for="testName">Test Name:</label>
+        <input type="text" id="testName" name="testName" required>
 
-    <label for="startTime">Start Time:</label>
-    <input type="datetime-local" id="startTime" name="startTime" required>
+        <label for="startTime">Start Time:</label>
+        <input type="datetime-local" id="startTime" name="startTime" required>
 
-    <label for="endTime">End Time:</label>
-    <input type="datetime-local" id="endTime" name="endTime" required>
+        <label for="endTime">End Time:</label>
+        <input type="datetime-local" id="endTime" name="endTime" required>
 
-    <h2>Available Questions</h2>
-    <div class="question-container" id="availableQuestions">
-      <div th:each="question : ${questions}" class="question" th:id="'question-' + ${question.id}">
-        <p th:text="${question.description}"></p>
-        <button type="button" th:attr="onclick='addToTest(' + ${question.id} + ')'">Add to Test</button>
-      </div>
-    </div>
+        <h2>Available Questions</h2>
+        <div class="question-container" id="availableQuestions">
+            <div th:each="question : ${questions}" class="question" th:id="'question-' + ${question.id}">
+                <p th:text="${question.description}"></p>
+                <button type="button" th:attr="onclick='addToTest(' + ${question.id} + ')'">Add to Test</button>
+            </div>
+        </div>
 
-    <h2>Selected Questions</h2>
-    <div class="selected-questions" id="selectedQuestions"></div>
+        <h2>Selected Questions</h2>
+        <div class="selected-questions" id="selectedQuestions"></div>
 
-    <input type="hidden" id="selectedQuestionIds" name="selectedQuestionIds">
-    <button type="submit">Save Test</button>
+        <input type="hidden" id="selectedQuestionIds" name="selectedQuestionIds">
+        <button type="submit">Save Test</button>
 
-  </form>
-  <form action="/inviteUser">
-    <button type = "submit" >Invite Users</button>
-  </form>
+    </form>
+    <form action="/inviteUser">
+        <button type="submit">Invite Users</button>
+    </form>
 </div>
 
 
 <script>
-  let selectedQuestions = [];
+    let selectedQuestions = [];
 
-  function addToTest(questionId) {
-      const questionElement = document.getElementById('question-' + questionId);
-      if (!questionElement) return;
+    function addToTest(questionId) {
+        const questionElement = document.getElementById('question-' + questionId);
+        if (!questionElement) return;
 
-      // Move question to the selected list
-      document.getElementById('selectedQuestions').appendChild(questionElement);
+        // Move question to the selected list
+        document.getElementById('selectedQuestions').appendChild(questionElement);
 
-      // Remove "Add to Test" button
-      questionElement.querySelector("button").remove();
+        // Remove "Add to Test" button
+        questionElement.querySelector("button").remove();
 
-      // Store selected question ID
-      selectedQuestions.push(questionId);
-      document.getElementById('selectedQuestionIds').value = selectedQuestions.join(',');
-  }
+        // Store selected question ID
+        selectedQuestions.push(questionId);
+        document.getElementById('selectedQuestionIds').value = selectedQuestions.join(',');
+    }
 
-  document.getElementById('testForm').addEventListener('submit', function(event) {
-      if (selectedQuestions.length === 0) {
-          alert("Please select at least one question!");
-          event.preventDefault(); // Prevent form submission
-      }
-  });
+    document.getElementById('testForm').addEventListener('submit', function(event) {
+        if (selectedQuestions.length === 0) {
+            alert("Please select at least one question!");
+            event.preventDefault(); // Prevent form submission
+        }
+    });
 </script>
 
 </body>

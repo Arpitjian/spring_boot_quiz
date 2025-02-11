@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class MainController {
     @GetMapping("/")
-    public String showhome(){
-        return  "index";
+    public String showhome() {
+        return "index";
 
     }
 

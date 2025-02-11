@@ -1,80 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Assign Users to Test</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; padding: 20px; }
-    .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background: #f9f9f9; }
-    h1 { text-align: center; }
-    label { font-weight: bold; display: block; margin-top: 10px; }
-    select, button, input { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ccc; border-radius: 4px; }
-    button { background: #007bff; color: white; cursor: pointer; }
-    button:hover { background: #0056b3; }
-    .user-list { list-style-type: none; padding: 0; }
-    .user-list li { padding: 5px; border-bottom: 1px solid #ccc; }
-  </style>
-  <script>
-    function reloadPage() {
-        let testId = document.getElementById("test").value;
-        if (testId) {
-            window.location.href = "/inviteUser?testId=" + testId;
+    <title>Questions List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
         }
-    }
-  </script>
+        h1 {
+            color: #333;
+        }
+        .question-container {
+            margin-top: 20px;
+        }
+        .question {
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 <body>
 
-<div class="container">
-  <h1>Invite Users to Test</h1>
+<h1>Questions List</h1>
 
-  <!-- Select Test Dropdown -->
-  <form>
-    <label for="test">Select Test:</label>
-    <select id="test" name="testId" required onchange="reloadPage()">
-      <option value="">-- Select Test --</option>
-      <option th:each="test : ${tests}"
-              th:value="${test.id}"
-              th:text="${test.test_name}"
-              th:selected="${selectedTest != null and selectedTest.id == test.id}">
-      </option>
-    </select>
-  </form>
-
-  <br>
-
-  <!-- Assigned Users -->
-  <div th:if="${selectedTest}">
-    <h2>Users Assigned to <span th:text="${selectedTest.test_name}"></span></h2>
-    <ul class="user-list">
-      <li th:each="user : ${assignedUsers}" th:text="${user.user_name}"></li>
-    </ul>
-  </div>
-
-  <br>
-
-  <!-- Assign New Users -->
-  <div th:if="${selectedTest}">
-    <h2>Assign New Users</h2>
-
-    <!-- ✅ Form now contains both testId and checkboxes inside -->
-    <form action="/assignTest" method="post">
-      <input type="hidden" name="testId" th:value="${selectedTest.id}" />
-
-      <ul class="user-list">
-        <li th:each="user : ${users}">
-          <input type="checkbox" name="userIds" th:value="${user.id}">
-          <span th:text="${user.user_name}"></span>
-        </li>
-      </ul>
-
-      <button type="submit">Assign Users to Test</button>
-
-    </form>
-    <form action="/exitPage">
-      <button type="submit">Exit</button>
-    </form>
-
-  </div>
+<div class="question-container">
+    <div th:each="question : ${questions}" class="question">
+        <p th:text="${question.description}"></p>
+    </div>
 </div>
 
 </body>

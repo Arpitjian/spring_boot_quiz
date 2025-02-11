@@ -36,52 +36,53 @@ public class TestController {
     private UserResponseRepo userResponseRepo;
 
     @Autowired
-    private  ResultRepo rRepo;
+    private ResultRepo rRepo;
 
     @PostMapping("/saveTest")
     public String saveTest(
-           @RequestParam String testName,
-           @RequestParam String startTime,
-           @RequestParam String endTime,
-           @RequestParam String selectedQuestionIds) {
+            @RequestParam String testName,
+            @RequestParam String startTime,
+            @RequestParam String endTime,
+            @RequestParam String selectedQuestionIds) {
 
-       System.out.println("Received Test Name: " + testName);
-       System.out.println("Received Start Time: " + startTime);
-       System.out.println("Received End Time: " + endTime);
-       System.out.println("Received Question IDs: " + selectedQuestionIds);
+        System.out.println("Received Test Name: " + testName);
+        System.out.println("Received Start Time: " + startTime);
+        System.out.println("Received End Time: " + endTime);
+        System.out.println("Received Question IDs: " + selectedQuestionIds);
 
-       // Parse start and end times
-       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-       LocalDateTime parsedStartTime = LocalDateTime.parse(startTime, formatter);
-       LocalDateTime parsedEndTime = LocalDateTime.parse(endTime, formatter);
 
-       // Fetch selected questions from DB
-       List<Question> selectedQuestions = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime parsedStartTime = LocalDateTime.parse(startTime, formatter);
+        LocalDateTime parsedEndTime = LocalDateTime.parse(endTime, formatter);
 
-       if (!selectedQuestionIds.isEmpty()) {
-           List<Long> questionIds = List.of(selectedQuestionIds.split(",")).stream()
-                   .map(Long::parseLong)
-                   .collect(Collectors.toList());
 
-           selectedQuestions.addAll(questionRepo.findAllById(questionIds));
-       }
+        List<Question> selectedQuestions = new ArrayList<>();
 
-       // Create and save test
-       Test test = new Test();
-       test.setTestName(testName);
-       test.setStartTime(parsedStartTime);
-       test.setEndTime(parsedEndTime);
-       test.setQuestions(selectedQuestions);
+        if (!selectedQuestionIds.isEmpty()) {
+            List<Long> questionIds = List.of(selectedQuestionIds.split(",")).stream()
+                    .map(Long::parseLong)
+                    .collect(Collectors.toList());
 
-       testRepo.save(test);
+            selectedQuestions.addAll(questionRepo.findAllById(questionIds));
+        }
 
-       return "success";
-   }
+
+        Test test = new Test();
+        test.setTestName(testName);
+        test.setStartTime(parsedStartTime);
+        test.setEndTime(parsedEndTime);
+        test.setQuestions(selectedQuestions);
+
+        testRepo.save(test);
+
+        return "success";
+    }
+
     @GetMapping("/createTest")
     public String createTest(Model model) {
-        List<Question> questions = questionRepo.findAll();  // Fetch all available questions
+        List<Question> questions = questionRepo.findAll();
         model.addAttribute("questions", questions);
-        return "createTest";  // Ensure createTest.html exists in src/main/resources/templates/
+        return "createTest";
     }
 
     @PostMapping("/validateDetails")
@@ -123,14 +124,21 @@ public class TestController {
     }
 
     @GetMapping("/testDetails")
-    public  String validateTestDetails(){
-        return  "testDetails";
+    public String validateTestDetails() {
+        return "testDetails";
     }
 
     @GetMapping("/testPage")
-    public String showTestPage(@RequestParam Long testId, @RequestParam Integer userId, Model model) {
+    public String showTestPage(@RequestParam Long testId, @RequestParam Long userId, Model model) {
         System.out.println("inside the Test COntroller");
         Test test = testRepo.findById(testId).orElse(null);
+        //Result result =  rRepo.findByUser_Id(userId,testId);
+        boolean resultExists = rRepo.existsByUser_IdAndTest_Id(userId,testId);
+        if(resultExists){
+            return "alreadySubmitted";
+        }
+
+
 
         if (test == null) {
             return "error"; // Handle error
@@ -140,6 +148,8 @@ public class TestController {
 
         model.addAttribute("testId", testId);
         model.addAttribute("userId", userId);
+        model.addAttribute("startTime",test.getStartTime());
+        model.addAttribute("endTime",test.getEndTime());
         model.addAttribute("testName", test.getTestName());
         model.addAttribute("questions", questions);
         for (Question q : questions) {
@@ -150,6 +160,7 @@ public class TestController {
 
         return "testPage";
     }
+
     @PostMapping("/saveUserResponse")
     public String saveUserResponse(@RequestParam String testId,
                                    @RequestParam String userId,
@@ -160,13 +171,13 @@ public class TestController {
         System.out.println("Saving user response...");
 
 
-        // Fetch user and test from DB
+
         System.out.println("Before testid");
         Long testIdLong = Long.parseLong(testId);
         System.out.println("Before userid");
         Long userIdLong = Long.parseLong(userId);
 
-        // Fetch user and test from DB
+
         Optional<User> userOpt = userRepo.findById(userIdLong);
         Optional<Test> testOpt = testRepo.findById(testIdLong);
 
@@ -176,7 +187,7 @@ public class TestController {
 
 
         if (!userOpt.isPresent() || !testOpt.isPresent()) {
-            return "error";  // Redirect to an error page if data is missing
+            return "error";
         }
 
         User user = userOpt.get();
@@ -211,12 +222,12 @@ public class TestController {
         // Save test result
         Result result = new Result(test, user, correctAnswers, totalQuestions);
         result.setCorrectAnswers(correctAnswers);
-        System.out.println("test : "+test);
-        System.out.println("user : "+user);
-        System.out.println("totalQuestions : "+totalQuestions);
-        System.out.println("correctAnswers : "+correctAnswers);
+        System.out.println("test : " + test);
+        System.out.println("user : " + user);
+        System.out.println("totalQuestions : " + totalQuestions);
+        System.out.println("correctAnswers : " + correctAnswers);
 
-       // correctAnswers
+        // correctAnswers
         rRepo.save(result);
 
 
@@ -230,10 +241,10 @@ public class TestController {
         model.addAttribute("totalQuestions", totalQuestions);
         model.addAttribute("scorePercentage", result.getScorePercentage());
 
-        //rRepo.save(result);
 
 
-        return "viewResult";  // Return the result page
+
+        return "viewResult";
     }
 
 }
